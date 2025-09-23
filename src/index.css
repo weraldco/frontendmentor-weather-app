@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import 'tailwindcss';
+
+@theme {
+	--font-dm-sans: 'DM Sans', sans-serif;
+	--font-bricolage: 'Bricolage Grotesque', sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	font-family: var(--font-dm-sans);
+	line-height: 1.5;
+	font-weight: 400;
+	font-size: var(--font-size);
+
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+	background-color: var(--neutral-900);
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	--neutral-900: hsl(243, 96%, 9%);
+	--neutral-800: hsl(243, 27%, 20%);
+	--neutral-700: hsl(243, 23%, 24%);
+	--neutral-600: hsl(243, 23%, 30%);
+	--neutral-300: hsl(240, 6%, 70%);
+	--neutral-200: hsl(250, 6%, 84%);
+	--neutral-0: hsl(0, 0%, 100%);
+
+	--orange-500: hsl(28, 100%, 52%);
+
+	--blue-500: hsl(233, 67%, 56%);
+	--blue-700: hsl(248, 70%, 36%);
+
+	--font-size: 18px;
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		color: #213547;
+		background-color: #ffffff;
+	}
+	a:hover {
+		color: #747bff;
+	}
+	button {
+		background-color: #f9f9f9;
+	}
+}
+.scrollbar-hide::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
+}
+
+.scrollbar-hide {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: 1px; /* Firefox */
+}
