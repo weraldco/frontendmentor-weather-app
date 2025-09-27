@@ -3,19 +3,27 @@ type WeatherDetailsT = {
 	humidity: number;
 	wind: number;
 	precipitation: number;
+	windLabel: string;
+	precipitationLabel: string;
 };
 const WeatherDetails = ({
 	feelsLike,
 	humidity,
 	wind,
 	precipitation,
+	windLabel,
+	precipitationLabel,
 }: WeatherDetailsT) => {
 	return (
 		<section className="w-full flex flex-row gap-6 items-center justify-between h-full">
 			<WeatherDetail title="Feels Like" detail={feelsLike} label="°" />
 			<WeatherDetail title="Humidity" detail={humidity} label="%" />
-			<WeatherDetail title="Wind" detail={wind} label="km/H" />
-			<WeatherDetail title="Precipitation" detail={precipitation} label="in" />
+			<WeatherDetail title="Wind" detail={wind} label={windLabel} />
+			<WeatherDetail
+				title="Precipitation"
+				detail={precipitation}
+				label={precipitationLabel}
+			/>
 		</section>
 	);
 };

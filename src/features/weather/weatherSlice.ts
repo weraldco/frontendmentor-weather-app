@@ -44,7 +44,17 @@ export const fetchWeatherData = createAsyncThunk<
 
 export const fetchWeatherByCity = createAsyncThunk(
 	'weather/fetchByCity',
-	async (city: string, thunkAPI) => {
+	async (
+		{
+			city,
+			units,
+		}: {
+			city: string;
+			units: { temperature: string; wind: string; precipitation: string };
+		},
+
+		thunkAPI
+	) => {
 		try {
 			const geoRes = await fetch(
 				`https://geocoding-api.open-meteo.com/v1/search?name=${city}`
@@ -53,10 +63,11 @@ export const fetchWeatherByCity = createAsyncThunk(
 			if (!geoData) return thunkAPI.rejectWithValue('City not found');
 			const place = geoData.results[0];
 
+			const { temperature, wind, precipitation } = units;
+
 			const weatherRes = await fetch(
-				`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&daily=weather_code,sunset,sunrise,temperature_2m_min,temperature_2m_max&hourly=temperature_2m,weather_code&current=temperature_2m,is_day,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,weather_code`
+				`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&daily=weather_code,sunset,sunrise,temperature_2m_min,temperature_2m_max&hourly=temperature_2m,weather_code&current=temperature_2m,is_day,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,weather_code&temperature_unit=${temperature}&wind_speed_unit=${wind}&precipitation_unit=${precipitation}`
 			);
-			// https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=10.5&daily=weather_code,sunset,sunrise,temperature_2m_min,temperature_2m_max&hourly=temperature_2m,weather_code&current=temperature_2m,is_day,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,weather_code
 
 			const weatherData = await weatherRes.json();
 			return {

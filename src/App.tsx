@@ -22,15 +22,28 @@ function App() {
 	const [city, setCity] = useState('');
 	const [day, setDay] = useState('-');
 	const [error, setError] = useState('');
+	const [temperatureUnit, setTemperatureUnit] = useState('celsius');
+	const [windUnit, setWindUnit] = useState('kmh');
+	const [precipitationUnit, setPrecipitationUnit] = useState('mm');
 	useEffect(() => {
 		const time = weather?.forecast?.current?.time;
 		if (time) {
 			setDay(new Date(time).toLocaleDateString('en-EN', { weekday: 'long' }));
 		}
 	}, [weather]);
+	console.log(status);
 	useEffect(() => {
-		if (status == 'idle') dispatch(fetchWeatherByCity('Berlin'));
-	}, [city, dispatch, status]);
+		dispatch(
+			fetchWeatherByCity({
+				city: city || 'Berlin',
+				units: {
+					temperature: temperatureUnit,
+					wind: windUnit,
+					precipitation: precipitationUnit,
+				},
+			})
+		);
+	}, [city, dispatch, precipitationUnit, temperatureUnit, windUnit]);
 
 	const cityName = weather?.city;
 	const country = weather?.country;
@@ -40,7 +53,10 @@ function App() {
 	const feelsLike = weather?.forecast?.current?.apparent_temperature;
 	const humidity = weather?.forecast?.current?.relative_humidity_2m;
 	const wind = weather?.forecast?.current?.wind_speed_10m;
+	const windLabel = weather?.forecast?.current_units?.wind_speed_10m;
 	const precipitation = weather?.forecast?.current?.precipitation;
+	const precipitationLabel = weather?.forecast?.current_units?.precipitation;
+
 	console.log('CN', cityName);
 	const handleSearch = () => {
 		clearWeatherData();
@@ -52,9 +68,23 @@ function App() {
 	};
 	console.log('Weather', weather);
 
+	const handleChangeUnit = () => {
+		setTemperatureUnit(temperatureUnit == 'celsius' ? 'fahrenheit' : 'celsius');
+		setWindUnit(windUnit == 'kmh' ? 'mph' : 'kmh');
+		setPrecipitationUnit(precipitationUnit == 'mm' ? 'inch' : 'mm');
+	};
+
 	return (
 		<div className=" h-screen w-full max-w-[1440px]  grid grid-rows-[auto_auto_3fr_50px] mx-auto font-sans gap-12 ">
-			<Header />
+			<Header
+				temperature={temperatureUnit}
+				setTemperature={setTemperatureUnit}
+				wind={windUnit}
+				setWind={setWindUnit}
+				precipitation={precipitationUnit}
+				setPrecipitation={setPrecipitationUnit}
+				handleClick={handleChangeUnit}
+			/>
 			{status !== 'failed' && (
 				<section className="flex flex-col justify-center gap-12 ">
 					<Hero />
@@ -84,6 +114,8 @@ function App() {
 								humidity={humidity}
 								wind={wind}
 								precipitation={precipitation}
+								windLabel={windLabel}
+								precipitationLabel={precipitationLabel}
 							/>
 						</section>
 						<section className=" rounded-2xl">
