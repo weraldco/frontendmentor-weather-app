@@ -10,10 +10,10 @@ type DailyForecast = {
 };
 const DailyForecast = ({ data }: { data: DailyForecast }) => {
 	return (
-		<section className="w-full flex flex-col gap-4  bg-amber-500">
+		<section className="w-full h-full flex flex-col gap-4 ">
 			<h1 className="text-xl font-semibold">Daily forecast</h1>
-			<div className="flex flex-row gap-4 items-center justify-between">
-				{data?.time.map((d, i) => (
+			<div className="flex flex-row gap-4 items-center justify-between   h-full ">
+				{(data?.time ? data?.time : new Array(7).fill('')).map((d, i) => (
 					<DayForecast
 						day={new Date(d).toLocaleDateString('en-EN', { weekday: 'short' })}
 						icon={getWeatherIcon(data?.weather_code[i])}
@@ -40,21 +40,23 @@ const DayForecast = ({
 	minTemp: number;
 }) => {
 	return (
-		<div className="w-full bg-green-600 rounded-xl p-2 h-[200px] justify-center items-center">
-			<h2 className="text-center">{day}</h2>
-			<div className="bg-red-300 flex items-center justify-center h-18">
-				{icon && (
-					<img
-						src={icon}
-						alt={day}
-						className="h-full object-fill bg-amber-300"
-					/>
-				)}
-			</div>
-			<div className="flex flex-row justify-between items-center gap-6 text-sm">
-				<p>{maxTemp}°</p>
-				<p>{minTemp}°</p>
-			</div>
+		<div className="w-full bg-[var(--neutral-700)] rounded-xl p-2 h-full justify-between items-center flex flex-col">
+			{day && icon && maxTemp && minTemp ? (
+				<>
+					<h2 className="text-center">{day}</h2>
+					<div className=" flex items-center justify-center h-18">
+						{icon && (
+							<img src={icon} alt={day} className="h-full object-fill " />
+						)}
+					</div>
+					<div className="flex flex-row justify-between items-center gap-6 text-sm">
+						<p>{maxTemp}°</p>
+						<p>{minTemp}°</p>
+					</div>
+				</>
+			) : (
+				''
+			)}
 		</div>
 	);
 };

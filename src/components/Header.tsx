@@ -1,6 +1,6 @@
 const Header = () => {
 	return (
-		<nav className="flex flex-row items-center justify-between w-full  p-4">
+		<nav className=" flex justify-between items-center p-4">
 			<div>
 				<img src="/images/logo.svg" alt="Weather Now Logo" />
 			</div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { useAppDispatch, useAppSelector } from './app/hook';
 import HourlyForecast from './components/ HourlyForecast';
+import APIErrorState from './components/APIErrorState';
 import DailyForecast from './components/DailyForecast';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -9,6 +10,7 @@ import ResultBanner from './components/ResultBanner';
 import Search from './components/Search';
 import WeatherDetails from './components/WeatherDetails';
 import {
+	clearWeatherData,
 	fetchWeatherByCity,
 	selectAllWeather,
 } from './features/weather/weatherSlice';
@@ -18,12 +20,18 @@ function App() {
 	const weather = useAppSelector(selectAllWeather);
 	const dispatch = useAppDispatch();
 	const [city, setCity] = useState('');
-	const [day, setDay] = useState('Tuesday');
+	const [day, setDay] = useState('-');
 	const [error, setError] = useState('');
-	const [loading, setLoading] = useState(false);
+	useEffect(() => {
+		const time = weather?.forecast?.current?.time;
+		if (time) {
+			setDay(new Date(time).toLocaleDateString('en-EN', { weekday: 'long' }));
+		}
+	}, [weather]);
 	useEffect(() => {
 		if (status == 'idle') dispatch(fetchWeatherByCity('Berlin'));
 	}, [city, dispatch, status]);
+
 	const cityName = weather?.city;
 	const country = weather?.country;
 	const time = weather?.forecast?.current?.time;
@@ -33,20 +41,22 @@ function App() {
 	const humidity = weather?.forecast?.current?.relative_humidity_2m;
 	const wind = weather?.forecast?.current?.wind_speed_10m;
 	const precipitation = weather?.forecast?.current?.precipitation;
-
+	console.log('CN', cityName);
 	const handleSearch = () => {
+		clearWeatherData();
+		console.log('clear', weather);
 		if (!city) setError('All fields are required!');
+
 		dispatch(fetchWeatherByCity(city));
 		setCity('');
 	};
-	console.log(weather);
-	console.log(city);
-	return (
-		<main className=" w-full flex flex-col items-center justify-center ">
-			<section className="w-full max-w-[1280px] items-center justify-center flex flex-col gap-12 ">
-				<Header />
+	console.log('Weather', weather);
 
-				<section className="flex w-full flex-col items-center justify-center gap-12 ">
+	return (
+		<div className=" h-screen w-full max-w-[1440px]  grid grid-rows-[auto_auto_3fr_50px] mx-auto font-sans gap-12 ">
+			<Header />
+			{status !== 'failed' && (
+				<section className="flex flex-col justify-center gap-12 ">
 					<Hero />
 					<Search
 						city={city}
@@ -55,8 +65,63 @@ function App() {
 						error={error}
 					/>
 				</section>
-				<section className="flex flex-row gap-8 bg-amber-300 w-full">
-					<div className="flex flex-col gap-8 w-[65%]">
+			)}
+			{status !== 'failed' ? (
+				<main className="grid grid-cols-[2fr_1fr] gap-8 ">
+					<article className=" grid grid-rows-[auto_150px_300px] gap-8">
+						<section className="bg-[var(--neutral-700)] rounded-2xl">
+							<ResultBanner
+								city={cityName}
+								country={country}
+								time={time}
+								temp={temp}
+								weatherCode={weatherCode}
+							/>
+						</section>
+						<section className=" rounded-2xl">
+							<WeatherDetails
+								feelsLike={feelsLike}
+								humidity={humidity}
+								wind={wind}
+								precipitation={precipitation}
+							/>
+						</section>
+						<section className=" rounded-2xl">
+							<DailyForecast data={weather?.forecast?.daily} />
+						</section>
+					</article>
+					<aside className="bg-[var(--neutral-700)] h-full grid  rounded-2xl ">
+						<HourlyForecast
+							day={day}
+							data={weather?.forecast?.hourly}
+							setDay={setDay}
+						/>
+					</aside>
+				</main>
+			) : (
+				<APIErrorState />
+			)}
+			<footer className="attribution ">
+				Challenge by
+				<a href="https://www.frontendmentor.io?ref=challenge">
+					Frontend Mentor
+				</a>
+				. Coded by <a href="#">Your Name Here</a>.
+			</footer>
+			{/* <section className="w-[1440px] grid gap-8 ">
+				<Header />
+
+				<section className=" bg-amber-400 ">
+					<Hero />
+					<Search
+						city={city}
+						setCity={setCity}
+						handleSearch={handleSearch}
+						error={error}
+					/>
+				</section>
+				<section className="bg-amber-300">
+					<div className=" bg-amber-500">
 						<ResultBanner
 							city={cityName}
 							country={country}
@@ -73,7 +138,7 @@ function App() {
 						<DailyForecast data={weather?.forecast?.daily} />
 					</div>
 
-					<div className=" w-[35%]">
+					<div className=" bg-amber-700">
 						<HourlyForecast
 							day={day}
 							data={weather?.forecast?.hourly}
@@ -82,15 +147,15 @@ function App() {
 					</div>
 				</section>
 
-				<div className="attribution">
+				<div className="attribution bg-amber-300">
 					Challenge by
 					<a href="https://www.frontendmentor.io?ref=challenge">
 						Frontend Mentor
 					</a>
 					. Coded by <a href="#">Your Name Here</a>.
 				</div>
-			</section>
-		</main>
+			</section> */}
+		</div>
 	);
 }
 
