@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
+import type { HourlyT } from '../features/weather/weatherSlice';
 import { getWeatherIcon } from '../utils/functions';
-
-type HourlyT = {
-	temperature_2m: number[];
-	time: string[];
-	weather_code: number[];
-};
 
 type HourlyTS = {
 	time: string;
@@ -15,7 +10,8 @@ type HourlyTS = {
 
 type HourlyForecastT = {
 	day: string;
-	data: HourlyT[];
+	data?: HourlyT;
+	setDay: (d: string) => void;
 };
 const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 	const [isOption, setIsOption] = useState(false);
@@ -25,7 +21,7 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 	useEffect(() => {
 		if (!data || !day) return;
 
-		const filtered = data?.time.reduce((acc, d, i) => {
+		const filtered = data?.time.reduce<HourlyTS[]>((acc, d, i) => {
 			const week = new Date(d).toLocaleDateString('en-US', {
 				weekday: 'long',
 			});
@@ -83,7 +79,7 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 					)}
 				</div>
 			</div>
-			<div className="grid gap-4 h-[750px] p-6 pt-2 overflow-y-scroll ">
+			<div className="grid gap-4 h-[750px] p-6 pt-2 overflow-y-scroll scrollbar-custom ">
 				{hourlyData.map((h) => (
 					<HourForecastItem
 						icon={getWeatherIcon(h.weather_code)}

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hook';
 import {
-	fetchWeatherByCity,
+	// fetchWeatherByCity,
 	fetchWeatherData,
 	selectAllWeather,
 } from '../features/weather/weatherSlice';
@@ -30,7 +30,7 @@ const Weather = () => {
 
 	const handleClick = (city: string) => {
 		if (city.trim()) {
-			dispatch(fetchWeatherByCity(city));
+			// dispatch(fetchWeatherByCity(city));
 		}
 	};
 

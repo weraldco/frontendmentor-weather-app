@@ -61,3 +61,18 @@
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: 1px; /* Firefox */
 }
+@layer utilities {
+	.scrollbar-custom::-webkit-scrollbar {
+		width: 8px;
+	}
+	.scrollbar-custom::-webkit-scrollbar-track {
+		background: var(--neutral-700); /* Tailwind gray-100 */
+	}
+	.scrollbar-custom::-webkit-scrollbar-thumb {
+		background: var(--neutral-800); /* Tailwind gray-500 */
+		border-radius: 10px;
+	}
+	.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+		background: var(--neutral-600); /* Tailwind gray-800 */
+	}
+}

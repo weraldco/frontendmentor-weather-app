@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 const Search = ({
 	city,
 	setCity,
@@ -15,11 +13,11 @@ const Search = ({
 		<section className="w-full flex flex-col items-center justify-center">
 			<form className="w-full max-w-xl flex flex-row justify-between gap-4">
 				<div className="flex gap-4 items-center relative w-full">
-					<label htmlFor="" className="absolute left-6">
+					<label htmlFor="" className="absolute left-4">
 						<img src="/images/icon-search.svg" alt="Search Icon" />
 					</label>
 					<input
-						className="bg-[var(--neutral-700)] pl-14 py-3 p r-4  w-full rounded-xl text-[var(--neutral-0)]"
+						className="bg-[var(--neutral-700)] pl-11 py-3 p r-4  w-full rounded-xl text-[var(--neutral-0)]"
 						type="text"
 						name="search"
 						id="search"

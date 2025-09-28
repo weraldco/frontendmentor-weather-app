@@ -20,7 +20,6 @@ const Header = ({
 	handleClick,
 }: HeaderPropsT) => {
 	const [isMenu, setIsMenu] = useState(false);
-	console.log(precipitation);
 	return (
 		<nav className=" flex justify-between items-center p-4">
 			<a href="/">

@@ -1,10 +1,10 @@
 import { getWeatherIcon } from '../utils/functions';
 
 type ResultBannerT = {
-	city: string;
-	country: string;
-	time: Date;
-	temp: number;
+	city?: string;
+	country?: string;
+	time?: string;
+	temp?: number;
 	weatherCode: number;
 };
 
@@ -15,7 +15,7 @@ const ResultBanner = ({
 	temp,
 	weatherCode,
 }: ResultBannerT) => {
-	if (!city || !country || !time || !temp || !weatherCode)
+	if (!city || !country || !time || !temp)
 		return (
 			<div className=" h-full grid place-items-center">
 				<div className="flex flex-col gap-4 items-center">

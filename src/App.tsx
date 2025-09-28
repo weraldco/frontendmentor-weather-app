@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import './App.css';
 import { useAppDispatch, useAppSelector } from './app/hook';
@@ -43,7 +44,7 @@ function App() {
 				},
 			})
 		);
-	}, [city, dispatch, precipitationUnit, temperatureUnit, windUnit]);
+	}, [dispatch, precipitationUnit, temperatureUnit, windUnit]);
 
 	const cityName = weather?.city;
 	const country = weather?.country;
@@ -57,13 +58,20 @@ function App() {
 	const precipitation = weather?.forecast?.current?.precipitation;
 	const precipitationLabel = weather?.forecast?.current_units?.precipitation;
 
-	console.log('CN', cityName);
 	const handleSearch = () => {
 		clearWeatherData();
-		console.log('clear', weather);
 		if (!city) setError('All fields are required!');
 
-		dispatch(fetchWeatherByCity(city));
+		dispatch(
+			fetchWeatherByCity({
+				city: city,
+				units: {
+					temperature: temperatureUnit,
+					wind: windUnit,
+					precipitation: precipitationUnit,
+				},
+			})
+		);
 		setCity('');
 	};
 	console.log('Weather', weather);
@@ -105,7 +113,7 @@ function App() {
 								country={country}
 								time={time}
 								temp={temp}
-								weatherCode={weatherCode}
+								weatherCode={weatherCode ?? 0}
 							/>
 						</section>
 						<section className=" rounded-2xl">
@@ -140,53 +148,6 @@ function App() {
 				</a>
 				. Coded by <a href="#">Your Name Here</a>.
 			</footer>
-			{/* <section className="w-[1440px] grid gap-8 ">
-				<Header />
-
-				<section className=" bg-amber-400 ">
-					<Hero />
-					<Search
-						city={city}
-						setCity={setCity}
-						handleSearch={handleSearch}
-						error={error}
-					/>
-				</section>
-				<section className="bg-amber-300">
-					<div className=" bg-amber-500">
-						<ResultBanner
-							city={cityName}
-							country={country}
-							time={time}
-							temp={temp}
-							weatherCode={weatherCode}
-						/>
-						<WeatherDetails
-							feelsLike={feelsLike}
-							humidity={humidity}
-							wind={wind}
-							precipitation={precipitation}
-						/>
-						<DailyForecast data={weather?.forecast?.daily} />
-					</div>
-
-					<div className=" bg-amber-700">
-						<HourlyForecast
-							day={day}
-							data={weather?.forecast?.hourly}
-							setDay={setDay}
-						/>
-					</div>
-				</section>
-
-				<div className="attribution bg-amber-300">
-					Challenge by
-					<a href="https://www.frontendmentor.io?ref=challenge">
-						Frontend Mentor
-					</a>
-					. Coded by <a href="#">Your Name Here</a>.
-				</div>
-			</section> */}
 		</div>
 	);
 }

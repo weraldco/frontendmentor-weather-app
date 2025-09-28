@@ -1,24 +1,20 @@
+import type { DailyT } from '../features/weather/weatherSlice';
 import { getWeatherIcon } from '../utils/functions';
 
 type DailyForecast = {
-	sunrise: string[];
-	sunset: string[];
-	temperature_2m_max: number[];
-	temperature_2m_min: number[];
-	time: string[];
-	weather_code: number[];
+	data?: DailyT;
 };
-const DailyForecast = ({ data }: { data: DailyForecast }) => {
+const DailyForecast = ({ data }: DailyForecast) => {
 	return (
 		<section className="w-full h-full flex flex-col gap-4 ">
 			<h1 className="text-xl font-semibold">Daily forecast</h1>
 			<div className="flex flex-row gap-4 items-center justify-between   h-full ">
-				{(data?.time ? data?.time : new Array(7).fill('')).map((d, i) => (
+				{(data?.time ? data.time : new Array(7).fill('')).map((d, i) => (
 					<DayForecast
 						day={new Date(d).toLocaleDateString('en-EN', { weekday: 'short' })}
-						icon={getWeatherIcon(data?.weather_code[i])}
-						maxTemp={data?.temperature_2m_max[i]}
-						minTemp={data?.temperature_2m_min[i]}
+						icon={getWeatherIcon(data?.weather_code[i] ?? -1)}
+						maxTemp={data?.temperature_2m_max[i] ?? -1}
+						minTemp={data?.temperature_2m_min[i] ?? -1}
 					></DayForecast>
 				))}
 			</div>

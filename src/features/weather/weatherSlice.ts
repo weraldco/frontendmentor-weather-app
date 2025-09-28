@@ -7,13 +7,55 @@ import {
 	type PayloadAction,
 } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
+export interface DailyT {
+	sunrise: string[];
+	sunset: string[];
+	temperature_2m_max: number[];
+	temperature_2m_min: number[];
+	time: string[];
+	weather_code: number[];
+}
 
-export interface Weather {
-	weatherResult: [];
+export interface HourlyT {
+	temperature_2m: number[];
+	time: string[];
+	weather_code: number[];
+}
+export interface WeatherData {
+	city: string;
+	country: string;
+	forecast: {
+		current: {
+			apparent_temperature: number;
+			precipitation: number;
+			relative_humidity_2m: number;
+			temperature_2m: number;
+			time: string;
+			weather_code: number;
+			wind_direction_10m: number;
+			wind_gusts_10m: number;
+			wind_speed_10m: number;
+		};
+		current_units: {
+			apparent_temperature: string;
+			interval: string;
+			is_day: string;
+			precipitation: string;
+			relative_humidity_2m: string;
+			temperature_2m: string;
+			time: string;
+			weather_code: string;
+			wind_direction_10m: string;
+			wind_gusts_10m: string;
+			wind_speed_10m: string;
+		};
+		daily: DailyT;
+		hourly: HourlyT;
+	};
 }
 
 interface WeatherState {
-	data: [] | null;
+	data: WeatherData | null;
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: string | null;
 }
@@ -25,7 +67,7 @@ const initialState: WeatherState = {
 };
 
 export const fetchWeatherData = createAsyncThunk<
-	Weather[],
+	WeatherData,
 	void,
 	{ rejectValue: string }
 >('weather/fetchWeatherData', async (_, thunkAPI) => {
@@ -35,7 +77,7 @@ export const fetchWeatherData = createAsyncThunk<
 		);
 		if (!res.ok) return thunkAPI.rejectWithValue('Network response was not ok');
 
-		const data = (await res.json()) as Weather[];
+		const data = (await res.json()) as WeatherData;
 		return data;
 	} catch (err) {
 		return thunkAPI.rejectWithValue('Fetch failed');
