@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import ResultBanner from './components/ResultBanner';
 import Search from './components/Search';
+import Test from './components/Test';
 import WeatherDetails from './components/WeatherDetails';
 import {
 	clearWeatherData,
@@ -211,6 +212,7 @@ function App() {
 			) : (
 				<APIErrorState />
 			)}
+			{/* <Test /> */}
 			<footer className="attribution ">
 				Challenge by{' '}
 				<a href="https://www.frontendmentor.io?ref=challenge">

@@ -1,3 +1,4 @@
+import { isPending } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import type { HourlyT } from '../features/weather/weatherSlice';
 import { getWeatherIcon } from '../utils/functions';
@@ -47,6 +48,8 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 		'Saturday',
 		'Sunday',
 	];
+
+	console.log(isOption);
 	return (
 		<div className="flex flex-col rounded-xl gap-4 h-full">
 			<div className="flex flex-row justify-between w-full items-center pt-6 px-6">
@@ -58,10 +61,16 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 						onClick={() => setIsOption((prev) => !prev)}
 					>
 						<p>{day !== 'Invalid Date' ? day : '—'}</p>
-						<img src="/images/icon-dropdown.svg" alt="Dropdown" />
+						<img
+							src="/images/icon-dropdown.svg"
+							alt="Dropdown"
+							style={{
+								transform: `${isOption ? 'rotate(180deg)' : 'rotate(0deg)'}`,
+							}}
+						/>
 					</button>
 					{isOption && day !== 'Invalid Date' && (
-						<div className="p-2 bg-[var(--neutral-200)] rounded-xl absolute top-12">
+						<div className="p-2 bg-[var(--neutral-700)] rounded-xl absolute top-12 border-2 border-[var(--neutral-600)] w-40">
 							<ul>
 								{days.map((d, i) => (
 									<li
@@ -70,6 +79,7 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 											setDay(d);
 											setIsOption(false);
 										}}
+										className="cursor-pointer hover:bg-[var(--neutral-600)] py-1 px-2 rounded-md"
 									>
 										{d}
 									</li>

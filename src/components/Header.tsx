@@ -36,7 +36,13 @@ const Header = ({
 					</div>
 					<p>Units</p>
 					<div>
-						<img src="/images/icon-dropdown.svg" alt="" />
+						<img
+							src="/images/icon-dropdown.svg"
+							alt="drop down icon"
+							style={{
+								transform: `${isMenu ? 'rotate(180deg)' : 'rotate(0deg)'}`,
+							}}
+						/>
 					</div>
 				</button>
 				<div
@@ -130,7 +136,11 @@ const NavMenuItem = ({
 		>
 			<p className="font-semibold">{unit}</p>
 			{isActive && (
-				<img src="/images/icon-checkmark.svg" alt="Checkmark Icon" />
+				<img
+					src="/images/icon-checkmark.svg"
+					alt="Checkmark Icon"
+					style={{ transform: 'rotate(180deg)' }}
+				/>
 			)}
 		</div>
 	);
