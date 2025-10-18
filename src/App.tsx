@@ -1,10 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { useAppDispatch, useAppSelector } from './app/hook';
-import HourlyForecast from './components/ HourlyForecast';
 import APIErrorState from './components/APIErrorState';
-import DailyForecast from './components/DailyForecast';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import ResultBanner from './components/ResultBanner';
@@ -12,12 +9,16 @@ import Search from './components/Search';
 import WeatherDetails from './components/WeatherDetails';
 import {
 	clearWeatherData,
+	fetachWeatherByCoords,
 	fetchWeatherByCity,
 	selectAllWeather,
 } from './features/weather/weatherSlice';
+const DailyForecast = React.lazy(() => import('./components/DailyForecast'));
+const HourlyForecast = React.lazy(() => import('./components/ HourlyForecast'));
 
 function App() {
 	const status = useAppSelector((s) => s.weather.status);
+	const loading = useAppSelector((s) => s.weather.loading);
 	const weather = useAppSelector(selectAllWeather);
 	const dispatch = useAppDispatch();
 	const [city, setCity] = useState('');
@@ -26,6 +27,29 @@ function App() {
 	const [temperatureUnit, setTemperatureUnit] = useState('celsius');
 	const [windUnit, setWindUnit] = useState('kmh');
 	const [precipitationUnit, setPrecipitationUnit] = useState('mm');
+	const [location, setLocation] = useState<{
+		lat: number | null;
+		lon: number | null;
+	}>({ lat: null, lon: null });
+	// const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		if ('geolocation' in navigator) {
+			navigator.geolocation.getCurrentPosition(
+				(pos) => {
+					setLocation({
+						lat: pos.coords.latitude,
+						lon: pos.coords.longitude,
+					});
+				},
+				(err) => {
+					setError(err.message);
+				}
+			);
+		} else {
+			setError('Geolocation not supported');
+		}
+	}, []);
 	useEffect(() => {
 		const time = weather?.forecast?.current?.time;
 		if (time) {
@@ -34,17 +58,27 @@ function App() {
 	}, [weather]);
 	console.log(status);
 	useEffect(() => {
-		dispatch(
-			fetchWeatherByCity({
-				city: city || 'Berlin',
-				units: {
-					temperature: temperatureUnit,
-					wind: windUnit,
-					precipitation: precipitationUnit,
-				},
-			})
-		);
-	}, [dispatch, precipitationUnit, temperatureUnit, windUnit]);
+		if (location.lat !== null && location.lon !== null) {
+			dispatch(
+				fetachWeatherByCoords({
+					lat: location.lat,
+					lon: location.lon,
+					units: {
+						temperature: temperatureUnit,
+						wind: windUnit,
+						precipitation: precipitationUnit,
+					},
+				})
+			);
+		}
+	}, [
+		dispatch,
+		location.lat,
+		location.lon,
+		precipitationUnit,
+		temperatureUnit,
+		windUnit,
+	]);
 
 	const cityName = weather?.city;
 	const country = weather?.country;
@@ -57,10 +91,16 @@ function App() {
 	const windLabel = weather?.forecast?.current_units?.wind_speed_10m;
 	const precipitation = weather?.forecast?.current?.precipitation;
 	const precipitationLabel = weather?.forecast?.current_units?.precipitation;
+	console.log('loading', loading);
 
-	const handleSearch = () => {
+	const handleSearch = async () => {
 		clearWeatherData();
-		if (!city) setError('All fields are required!');
+		setError('');
+
+		if (!city) {
+			setError('All fields are required!');
+			return;
+		}
 
 		dispatch(
 			fetchWeatherByCity({
@@ -72,8 +112,36 @@ function App() {
 				},
 			})
 		);
-		setCity('');
 	};
+
+	// const handleSearch = async () => {
+	// 	clearWeatherData();
+	// 	setError('');
+
+	// 	if (!city) {
+	// 		setError('All fields are required!');
+	// 		return;
+	// 	}
+	// 	setLoading(true);
+	// 	try {
+	// 		await dispatch(
+	// 			fetchWeatherByCity({
+	// 				city: city,
+	// 				units: {
+	// 					temperature: temperatureUnit,
+	// 					wind: windUnit,
+	// 					precipitation: precipitationUnit,
+	// 				},
+	// 			})
+	// 		).unwrap();
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 		setError('Failed to fetch weather data.');
+	// 	} finally {
+	// 		setCity('');
+	// 		setLoading(false);
+	// 	}
+	// };
 	console.log('Weather', weather);
 
 	const handleChangeUnit = () => {
@@ -101,6 +169,7 @@ function App() {
 						setCity={setCity}
 						handleSearch={handleSearch}
 						error={error}
+						loading={loading}
 					/>
 				</section>
 			)}
@@ -114,6 +183,7 @@ function App() {
 								time={time}
 								temp={temp}
 								weatherCode={weatherCode ?? 0}
+								loading={loading}
 							/>
 						</section>
 						<section className=" rounded-2xl">
@@ -142,11 +212,11 @@ function App() {
 				<APIErrorState />
 			)}
 			<footer className="attribution ">
-				Challenge by
+				Challenge by{' '}
 				<a href="https://www.frontendmentor.io?ref=challenge">
 					Frontend Mentor
 				</a>
-				. Coded by <a href="#">Your Name Here</a>.
+				. Coded by <a href="https://github.com/weraldco">Werald Opolen`to</a>.
 			</footer>
 		</div>
 	);

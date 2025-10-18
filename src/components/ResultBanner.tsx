@@ -6,6 +6,7 @@ type ResultBannerT = {
 	time?: string;
 	temp?: number;
 	weatherCode: number;
+	loading: boolean;
 };
 
 const ResultBanner = ({
@@ -14,8 +15,9 @@ const ResultBanner = ({
 	time,
 	temp,
 	weatherCode,
+	loading,
 }: ResultBannerT) => {
-	if (!city || !country || !time || !temp)
+	if (!city || !country || !time || !temp || loading)
 		return (
 			<div className=" h-full grid place-items-center">
 				<div className="flex flex-col gap-4 items-center">
@@ -48,7 +50,10 @@ const ResultBanner = ({
 						</div>
 						<div className="flex flex-row items-center">
 							<div className="w-40 h-40">
-								<img src={getWeatherIcon(weatherCode)} alt="Icon" />
+								<img
+									src={getWeatherIcon(weatherCode)}
+									alt="todays weather icon"
+								/>
 							</div>
 							<p className="text-8xl font-semibold italic">{temp}°</p>
 						</div>

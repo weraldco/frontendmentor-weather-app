@@ -1,14 +1,25 @@
+import VoiceButton from './VoiceButton';
+
 const Search = ({
 	city,
 	setCity,
 	handleSearch,
 	error,
+	loading,
 }: {
 	city: string;
 	setCity: (e: string) => void;
 	handleSearch: (city: string) => void;
 	error: string;
+	loading: boolean;
 }) => {
+	const SpeechRecognition =
+		window.SpeechRecognition || window.webkitSpeechRecognition;
+
+	const recognition = new SpeechRecognition();
+	recognition.continuous = false; // stop after user stops speaking
+	recognition.interimResults = false; // only final results
+	recognition.lang = 'en-US'; // language
 	return (
 		<section className="w-full flex flex-col items-center justify-center">
 			<form className="w-full max-w-xl flex flex-row justify-between gap-4">
@@ -26,13 +37,30 @@ const Search = ({
 						placeholder="Search for a place.."
 					/>
 				</div>
+
 				<button
-					className="bg-[var(--blue-500)] hover:bg-[var(--blue-700)] duration-200 cursor-pointer px-6 rounded-xl"
+					className={`bg-[var(--blue-500)]  duration-200 px-6 rounded-xl  ${
+						city
+							? 'cursor-pointer hover:bg-[var(--blue-700)]'
+							: 'cursor-no-drop'
+					}`}
 					onClick={() => handleSearch(city)}
 					type="button"
 				>
-					Search
+					{loading ? (
+						<span className="">
+							<img
+								src="/images/icon-loading.svg"
+								alt="Loading for weather data"
+								className="w-6 animate-spin"
+							/>
+						</span>
+					) : (
+						'Search'
+					)}
 				</button>
+
+				<VoiceButton setCity={setCity} />
 			</form>
 			<div>{error}</div>
 		</section>

@@ -63,9 +63,9 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 					{isOption && day !== 'Invalid Date' && (
 						<div className="p-2 bg-[var(--neutral-200)] rounded-xl absolute top-12">
 							<ul>
-								{days.map((d) => (
+								{days.map((d, i) => (
 									<li
-										key={d}
+										key={i}
 										onClick={() => {
 											setDay(d);
 											setIsOption(false);
@@ -80,8 +80,9 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 				</div>
 			</div>
 			<div className="grid gap-4 h-[750px] p-6 pt-2 overflow-y-scroll scrollbar-custom ">
-				{hourlyData.map((h) => (
+				{hourlyData.map((h, i) => (
 					<HourForecastItem
+						key={i}
 						icon={getWeatherIcon(h.weather_code)}
 						time={new Date(h.time).toLocaleTimeString('en-EN', {
 							hour: 'numeric',
@@ -111,7 +112,7 @@ const HourForecastItem = ({
 				<>
 					<figure className="flex flex-row items-center gap-4">
 						<div className="h-14 w-14">
-							<img src={icon} alt="Icon" className="h-full" />
+							<img src={icon} alt={`${icon} weather Icon`} className="h-full" />
 						</div>
 						<figcaption>{time}</figcaption>
 					</figure>

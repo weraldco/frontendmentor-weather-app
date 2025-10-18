@@ -11,8 +11,9 @@ const DailyForecast = ({ data }: DailyForecast) => {
 			<div className="flex flex-row gap-4 items-center justify-between   h-full ">
 				{(data?.time ? data.time : new Array(7).fill('')).map((d, i) => (
 					<DayForecast
+						key={i}
 						day={new Date(d).toLocaleDateString('en-EN', { weekday: 'short' })}
-						icon={getWeatherIcon(data?.weather_code[i] ?? -1)}
+						icon={getWeatherIcon(data?.weather_code[i] ?? 0)}
 						maxTemp={data?.temperature_2m_max[i] ?? -1}
 						minTemp={data?.temperature_2m_min[i] ?? -1}
 					></DayForecast>
@@ -42,7 +43,11 @@ const DayForecast = ({
 					<h2 className="text-center">{day}</h2>
 					<div className=" flex items-center justify-center h-18">
 						{icon && (
-							<img src={icon} alt={day} className="h-full object-fill " />
+							<img
+								src={icon}
+								alt={`${icon} weather icon`}
+								className="h-full object-fill "
+							/>
 						)}
 					</div>
 					<div className="flex flex-row justify-between items-center gap-6 text-sm">
