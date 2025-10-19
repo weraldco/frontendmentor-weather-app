@@ -21,7 +21,7 @@ const Header = ({
 }: HeaderPropsT) => {
 	const [isMenu, setIsMenu] = useState(false);
 	return (
-		<nav className=" flex justify-between items-center p-4">
+		<nav className="flex justify-between items-center py-4">
 			<a href="/">
 				<img src="/images/logo.svg" alt="Weather Now Logo" />
 			</a>
@@ -136,11 +136,7 @@ const NavMenuItem = ({
 		>
 			<p className="font-semibold">{unit}</p>
 			{isActive && (
-				<img
-					src="/images/icon-checkmark.svg"
-					alt="Checkmark Icon"
-					style={{ transform: 'rotate(180deg)' }}
-				/>
+				<img src="/images/icon-checkmark.svg" alt="Checkmark Icon" />
 			)}
 		</div>
 	);

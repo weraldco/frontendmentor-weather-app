@@ -15,7 +15,7 @@ const WeatherDetails = ({
 	precipitationLabel,
 }: WeatherDetailsT) => {
 	return (
-		<section className="w-full flex flex-row gap-6 items-center justify-between h-full">
+		<section className="w-full grid grid-cols-2 lg:grid-cols-4 gap-6 items-center justify-between h-full">
 			<WeatherDetail title="Feels Like" detail={feelsLike ?? -1} label="°" />
 			<WeatherDetail
 				title="Humidity"

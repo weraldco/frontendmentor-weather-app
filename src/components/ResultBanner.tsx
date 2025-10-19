@@ -31,15 +31,15 @@ const ResultBanner = ({
 			</div>
 		);
 	return (
-		<section className="w-full h-full  rounded-2xl">
-			<figure className="bg-[url(/images/bg-today-large.svg)] bg-no-repeat bg-cover bg-center w-full h-full rounded-2xl">
+		<section className="w-full h-full rounded-2xl">
+			<figure className="bg-[url(/images/bg-today-small.svg)] lg:bg-[url(/images/bg-today-large.svg)] bg-no-repeat bg-cover bg-center w-full h-full rounded-2xl">
 				{city && country && time && temp ? (
-					<figcaption className="flex flex-row items-center justify-between w-full h-full p-8">
-						<div>
-							<h2 className="text-3xl font-bold">
+					<figcaption className=" flex flex-col lg:flex-row items-center justify-between h-full px-6 py-10">
+						<div className="text-center lg:text-start">
+							<h2 className="text-2xl lg:text-3xl font-bold ">
 								{city}, {country}
 							</h2>
-							<p className="text-xl">
+							<p className="text-xl ">
 								{new Date(time).toLocaleDateString('en-EN', {
 									day: '2-digit',
 									month: 'short',
@@ -48,14 +48,16 @@ const ResultBanner = ({
 								})}
 							</p>
 						</div>
-						<div className="flex flex-row items-center">
-							<div className="w-40 h-40">
+						<div className="flex flex-row items-center ">
+							<div className=" lg:h-40 lg:w-40 flex items-center">
 								<img
 									src={getWeatherIcon(weatherCode)}
 									alt="todays weather icon"
 								/>
 							</div>
-							<p className="text-8xl font-semibold italic">{temp}°</p>
+							<p className="text-7xl lg:text-8xl font-semibold italic">
+								{temp}°
+							</p>
 						</div>
 					</figcaption>
 				) : (

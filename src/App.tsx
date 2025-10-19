@@ -6,7 +6,6 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import ResultBanner from './components/ResultBanner';
 import Search from './components/Search';
-import Test from './components/Test';
 import WeatherDetails from './components/WeatherDetails';
 import {
 	clearWeatherData,
@@ -115,34 +114,6 @@ function App() {
 		);
 	};
 
-	// const handleSearch = async () => {
-	// 	clearWeatherData();
-	// 	setError('');
-
-	// 	if (!city) {
-	// 		setError('All fields are required!');
-	// 		return;
-	// 	}
-	// 	setLoading(true);
-	// 	try {
-	// 		await dispatch(
-	// 			fetchWeatherByCity({
-	// 				city: city,
-	// 				units: {
-	// 					temperature: temperatureUnit,
-	// 					wind: windUnit,
-	// 					precipitation: precipitationUnit,
-	// 				},
-	// 			})
-	// 		).unwrap();
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 		setError('Failed to fetch weather data.');
-	// 	} finally {
-	// 		setCity('');
-	// 		setLoading(false);
-	// 	}
-	// };
 	console.log('Weather', weather);
 
 	const handleChangeUnit = () => {
@@ -152,7 +123,7 @@ function App() {
 	};
 
 	return (
-		<div className=" h-screen w-full max-w-[1440px]  grid grid-rows-[auto_auto_3fr_50px] mx-auto font-sans gap-12 ">
+		<div className=" h-screen w-full max-w-[1440px]  grid grid-rows-[auto_auto_3fr_50px] mx-auto font-sans gap-8 px-4">
 			<Header
 				temperature={temperatureUnit}
 				setTemperature={setTemperatureUnit}
@@ -175,8 +146,8 @@ function App() {
 				</section>
 			)}
 			{status !== 'failed' ? (
-				<main className="grid grid-cols-[2fr_1fr] gap-8 ">
-					<article className=" grid grid-rows-[auto_150px_300px] gap-8">
+				<main className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 ">
+					<article className=" grid grid-rows-[auto_auto_auto] gap-8">
 						<section className="bg-[var(--neutral-700)] rounded-2xl">
 							<ResultBanner
 								city={cityName}
@@ -187,7 +158,7 @@ function App() {
 								loading={loading}
 							/>
 						</section>
-						<section className=" rounded-2xl">
+						<section className="rounded-2xl">
 							<WeatherDetails
 								feelsLike={feelsLike}
 								humidity={humidity}
@@ -213,12 +184,26 @@ function App() {
 				<APIErrorState />
 			)}
 			{/* <Test /> */}
-			<footer className="attribution ">
-				Challenge by{' '}
-				<a href="https://www.frontendmentor.io?ref=challenge">
-					Frontend Mentor
-				</a>
-				. Coded by <a href="https://github.com/weraldco">Werald Opolen`to</a>.
+			<footer className="flex w-full flex-col lg:flex-row justify-center items-center text-sm">
+				<div>
+					<span className="text-neutral-500">Challenge by </span>
+					<a
+						href="https://www.frontendmentor.io?ref=challenge"
+						className="hover:text-amber-200 duration-200"
+					>
+						Frontend Mentor
+					</a>
+				</div>
+				<div className="div">
+					<span className="text-neutral-500">Coded by </span>
+					<a
+						href="https://github.com/weraldco"
+						className="hover:text-amber-200 duration-200"
+					>
+						Werald Opolento
+					</a>
+					.
+				</div>
 			</footer>
 		</div>
 	);

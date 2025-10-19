@@ -1,4 +1,3 @@
-import { isPending } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import type { HourlyT } from '../features/weather/weatherSlice';
 import { getWeatherIcon } from '../utils/functions';
@@ -49,7 +48,7 @@ const HourlyForecast = ({ day, data, setDay }: HourlyForecastT) => {
 		'Sunday',
 	];
 
-	console.log(isOption);
+	console.log(hourlyData);
 	return (
 		<div className="flex flex-col rounded-xl gap-4 h-full">
 			<div className="flex flex-row justify-between w-full items-center pt-6 px-6">

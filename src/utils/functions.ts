@@ -5,9 +5,9 @@ export const getWeatherIcon = (code: number) => {
 		return './images/icon-partly-cloudy.webp';
 	} else if (code == 3) {
 		return './images/icon-overcast.webp';
-	} else if (code >= 45 && code <= 46) {
+	} else if (code >= 45 && code <= 50) {
 		return './images/icon-fog.webp';
-	} else if (code >= 51 && code <= 53) {
+	} else if (code >= 51 && code <= 60) {
 		return './images/icon-drizzle.webp';
 	} else if ((code >= 61 && code <= 65) || code == 80) {
 		return './images/icon-rain.webp';

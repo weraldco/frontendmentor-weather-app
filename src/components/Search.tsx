@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import VoiceButton from './VoiceButton';
 
@@ -31,17 +32,18 @@ const Search = ({
 		const data = await res.json();
 
 		if (data.results) {
-			const matchedCountries = data.results.map((item) => item.country);
-			setResults([...new Set(matchedCountries)] as string[]); // remove duplicates
+			console.log(data.results);
+			const matchedCountries = data.results.map((item: any) => item.country);
+			setResults([...new Set(matchedCountries)] as string[]);
 		}
 	};
 	useEffect(() => {
 		fetchData(city);
 	}, [city]);
 	return (
-		<section className="w-full flex flex-col items-center justify-center">
-			<form className="w-full max-w-xl flex flex-row justify-between gap-4  relative">
-				<div className="flex gap-4 items-center relative w-full">
+		<section className="w-full flex flex-col items-center justify-center relative">
+			<form className="w-full max-w-xl grid grid-row-2 lg:grid-cols-3 gap-4">
+				<div className="flex gap-4 items-center relative w-full lg:col-span-2">
 					<label htmlFor="" className="absolute left-4">
 						<img src="/images/icon-search.svg" alt="Search Icon" />
 					</label>
@@ -55,34 +57,9 @@ const Search = ({
 						placeholder="Search for a place.."
 					/>
 				</div>
-
-				<button
-					className={`bg-[var(--blue-500)]  duration-200 px-6 rounded-xl  ${
-						city
-							? 'cursor-pointer hover:bg-[var(--blue-700)]'
-							: 'cursor-no-drop'
-					}`}
-					onClick={() => handleSearch(city)}
-					type="button"
-				>
-					{loading ? (
-						<span className="">
-							<img
-								src="/images/icon-loading.svg"
-								alt="Loading for weather data"
-								className="w-6 animate-spin"
-							/>
-						</span>
-					) : (
-						'Search'
-					)}
-				</button>
-
-				<VoiceButton setCity={setCity} />
-
 				{/* Result of city names */}
 				{results && results.length > 0 && city.length > 0 && (
-					<div className="absolute bg-[var(--neutral-700)] p-2  left-0 top-14 rounded-xl w-[450px]">
+					<div className="absolute bg-[var(--neutral-700)] p-2  left-0 top-15 z-50 rounded-xl w-[450px] border-2 border-[var(--neutral-600)]">
 						<ul>
 							{results.map((result, i) => (
 								<li
@@ -99,7 +76,33 @@ const Search = ({
 						</ul>
 					</div>
 				)}
+				<div className="w-full flex gap-2">
+					<button
+						className={`bg-[var(--blue-500)]  duration-200 px-6 py-3 rounded-xl w-full font-semibold ${
+							city
+								? 'cursor-pointer hover:bg-[var(--blue-700)]'
+								: 'cursor-no-drop'
+						}`}
+						onClick={() => handleSearch(city)}
+						type="button"
+					>
+						{loading ? (
+							<span className="">
+								<img
+									src="/images/icon-loading.svg"
+									alt="Loading for weather data"
+									className="w-6 animate-spin"
+								/>
+							</span>
+						) : (
+							'Search'
+						)}
+					</button>
+
+					<VoiceButton setCity={setCity} />
+				</div>
 			</form>
+
 			<div>{error}</div>
 		</section>
 	);

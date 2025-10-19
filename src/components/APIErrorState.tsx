@@ -1,3 +1,5 @@
+import { clearWeatherData } from '../features/weather/weatherSlice';
+
 const APIErrorState = () => {
 	return (
 		<div className="h-full row-start-2 row-end-4 flex flex-col items-center justify-start gap-4">
@@ -12,6 +14,7 @@ const APIErrorState = () => {
 			<button
 				className="flex bg-[var(--neutral-800)] items-center justify-center gap-2 text-sm p-2 rounded-lg cursor-pointer"
 				type="button"
+				onClick={() => clearWeatherData()}
 			>
 				<img src="/images/icon-retry.svg" alt="Retry Logo" />
 				<p className="text-xs">Retry</p>

@@ -8,7 +8,7 @@ const DailyForecast = ({ data }: DailyForecast) => {
 	return (
 		<section className="w-full h-full flex flex-col gap-4 ">
 			<h1 className="text-xl font-semibold">Daily forecast</h1>
-			<div className="flex flex-row gap-4 items-center justify-between   h-full ">
+			<div className="grid grid-cols-3 lg:grid-cols-7 gap-4 items-center justify-between h-full ">
 				{(data?.time ? data.time : new Array(7).fill('')).map((d, i) => (
 					<DayForecast
 						key={i}
